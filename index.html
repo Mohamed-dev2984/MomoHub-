@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محول الملفات لروابط عالمية 🚀</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #121212; 
+            color: #ffffff; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+        .card { 
+            background: #1e1e1e; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+            width: 100%; 
+            max-width: 480px; 
+            text-align: center;
+            border: 1px solid #333;
+        }
+        h2 { 
+            color: #00a8ff; 
+            margin-bottom: 15px; 
+            font-size: 24px;
+        }
+        p {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        input[type="file"] { 
+            width: 100%; 
+            padding: 12px; 
+            background: #2c2c2c; 
+            color: #fff; 
+            border-radius: 6px; 
+            border: 2px dashed #00a8ff; 
+            cursor: pointer; 
+            margin-bottom: 20px; 
+            outline: none;
+        }
+        input[type="file"]:hover {
+            border-color: #00e5ff;
+        }
+        #status {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #f1c40f;
+            font-size: 14px;
+        }
+        #result-box { 
+            margin-top: 20px; 
+            padding: 15px; 
+            background: #252525; 
+            border-radius: 6px; 
+            display: none; 
+            border-right: 4px solid #00a8ff; 
+            text-align: right; 
+        }
+        strong {
+            color: #2ed573;
+            font-size: 14px;
+        }
+        a { 
+            display: block;
+            margin-top: 10px;
+            color: #00e5ff; 
+            font-weight: bold; 
+            word-break: break-all; 
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>مُحوّل الملفات لروابط عالمية 🌐⚡</h2>
+        <p>ارفع أي ملف (صورة، فيديو، نص) وحوله لرابط حقيقي أونلاين يقدر أي حد في العالم يفتحه من جهاز تليفونه!</p>
+        
+        <input type="file" id="myFile" onchange="uploadAndGetLink()">
+        
+        <div id="status">في انتظار اختيار الملف... 🦾</div>
+        
+        <div id="result-box">
+            <strong>🔗 الرابط العالمي للملف (جاهز للمشاركة):</strong>
+            <a id="fileLink" href="#" target="_blank">جاري توليد الرابط...</a>
+        </div>
+    </div>
+
+    <script>
+        async function uploadAndGetLink() {
+            const fileInput = document.getElementById('myFile');
+            const statusDiv = document.getElementById('status');
+            const resultBox = document.getElementById('result-box');
+            const fileLink = document.getElementById('fileLink');
+
+            // 1. التأكد إن فيه ملف اترفع
+            if (fileInput.files.length === 0) {
+                resultBox.style.display = "none";
+                statusDiv.innerText = "❌ لم يتم اختيار أي ملف.";
+                statusDiv.style.color = "#ff4757";
+                return;
+            }
+
+            const uploadedFile = fileInput.files[0];
+            statusDiv.innerText = "⏳ جاري شحن وتمرير ملفك إلى السيرفر العالمي... 🛸";
+            statusDiv.style.color = "#f1c40f";
+            resultBox.style.display = "none";
+
+            // 2. تجهيز بيانات الملف بصيغة FormData عشان السيرفر يقبلها
+            const formData = new FormData();
+            formData.append('file', uploadedFile);
+
+            try {
+                // 3. إرسال الملف للسيرفر المجاني باستخدام الـ fetch السحرية
+                const response = await fetch('https://file.io', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error("فشل الرفع، السيرفر واجه مشكلة.");
+                }
+
+                // 4. قراءة رد السيرفر وتحويله لـ JSON
+                const data = await response.json();
+
+                if (data.success) {
+                    // 5. التقاط الرابط الحقيقي الحييييي أونلاين وعرضه
+                    const globalUrl = data.link;
+
+                    fileLink.href = globalUrl;
+                    fileLink.innerText = globalUrl;
+                    
+                    statusDiv.innerText = "✅ تم الرفع بنجاح وكسرنا قيود الـ Localhost! 🎉";
+                    statusDiv.style.color = "#2ed573";
+                    resultBox.style.display = "block";
+                } else {
+                    statusDiv.innerText = "❌ السيرفر رفض الملف، قد يكون حجمه كبير جداً.";
+                    statusDiv.style.color = "#ff4757";
+                }
+
+            } catch (error) {
+                console.error("حدث خطأ أثناء الرفع:", error);
+                statusDiv.innerText = "💥 خطأ! تأكد من اتصالك بالإنترنت وحاول مجدداً.";
+                statusDiv.style.color = "#ff4757";
+            }
+        }
+    </script>
+</body>
+</html>
